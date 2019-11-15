@@ -1,0 +1,66 @@
+#!/bin/bash
+#Script for first configuration
+#1- add user 
+echo "Enter user name"
+read username
+adduser $username
+
+#2- adding user to sudogroup
+echo "adding user to sudo user..."
+usermod -aG sudo $username
+sleep 3
+
+#4- openning the firewall for ssh
+echo "opening firewall for ssh"
+ufw allow ssh
+ufw enable
+sleep 3
+
+#5- asking user to send ssh pub key to droplet
+bContinue="true"
+while [ "$bContinue" == "true" ]
+	do
+	echo "run ssh-copy-id username@host on your local machine"
+	echo "Done? yes/no"
+	read run
+	if [ "$run" == "yes" ]
+	then
+		bContinue="false"
+	fi
+done
+
+#5- ask the user if he can connect
+bContinue="true"
+while [ "$bContinue" == "true" ]
+do
+	echo "test connection with ssh user@host"
+	echo "is it working yes/no"
+	read working
+	if [ "$working" == "yes" ]
+	then
+		bContinue="false"
+	fi
+done
+
+#3- modifying ssh config -> disable password, disble root login
+echo "modifying ssh config : disable root user, disable password login..."
+sed -i -e 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i -e 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+service ssh restart
+sleep 3
+
+#6- updating apt
+echo "updating depot..."
+apt-get update
+apt-get upgrade
+
+#7 Install mysql
+echo "Install mysql ? yes/no"
+read mysql
+if [ "$mysql" == "yes"]
+	apt-get install mysql-server
+	mysql_secure_installation
+	ufw allow mysql
+	systemctl start mysql
+then
+fi
