@@ -57,7 +57,7 @@ apt-get upgrade
 #7 Install mysql
 echo "Install mysql ? yes/no"
 read mysql
-if [ "$mysql" == "yes"]
+if [ "$mysql" == "yes" ]
 then
 	apt-get install mysql-server
 	mysql_secure_installation
