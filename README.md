@@ -7,6 +7,7 @@ You should install this script in /usr/local/sbin and run it as sudo.
 Something like  
 `cd /usr/local/sbin`  
 `git clone https://github.com/vFiouze/new-server.git`  
+`cd new-server`  
 `chmod +x first_config`  
 
 Then run:  
