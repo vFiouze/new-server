@@ -58,9 +58,9 @@ apt-get upgrade
 echo "Install mysql ? yes/no"
 read mysql
 if [ "$mysql" == "yes"]
+then
 	apt-get install mysql-server
 	mysql_secure_installation
 	ufw allow mysql
 	systemctl start mysql
-then
 fi
